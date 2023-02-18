@@ -57,8 +57,6 @@ public class BoardWriteController extends HttpServlet {
 		String pw = request.getParameter("boardpw");
 		int cId = Integer.parseInt(request.getParameter("cateSelect"));
 		
-		System.out.println(cId);
-		
 		dto.setUserId(id);
 		dto.setUserPw(pw);
 		dto.setTitle(bTitle);
