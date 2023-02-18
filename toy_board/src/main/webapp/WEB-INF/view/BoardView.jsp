@@ -26,7 +26,9 @@
 	</div>
 	<div class="boardViewinfo">
 		<span class="author">작성자 : ${bview.userId}</span> 
-		<span class="createDate">${bview.createDate}</span>
+		<span class="createDate">
+			<fmt:formatDate value="${bview.modifyDate != null ? bview.modifyDate :  bview.createDate}" pattern="yyyy.MM.dd / kk:mm" type="date"/>
+		</span>
 	</div>
 	
 	<div class="boardContent">
@@ -34,14 +36,13 @@
 			<span>${bview.content}</span>
 		</div>
 	</div>
-	
-	
-	<div>
-		<button type="button" onclick="intoList()" class="intoList">목록으로</button>	
+
+	<div style="float: right;">
+		<button type="button" onclick="intoList()" class="btn intoList">목록으로</button>	
+		<button type="button" onclick="goUpdate(${bview.id})" class="btn" name="updateCheck">수정</button>	
+		<button type="button" onclick="goDelete(${bview.id})" class="btn" name="updateCheck">삭제</button>	
 	</div>
-	<script type="text/javascript">
-	
-	</script>
+
 
 </body>
 </html>

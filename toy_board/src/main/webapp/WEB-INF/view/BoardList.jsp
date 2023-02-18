@@ -43,7 +43,7 @@
 							</td>
 							<td class="author">${anlist.userId}</td>
 							<td class="createD">
-								<fmt:formatDate value="${anlist.createDate}" pattern="MM.dd / kk:mm" type="date"/>
+								<fmt:formatDate value="${anlist.modifyDate != null ? anlist.modifyDate :  anlist.createDate}" pattern="MM.dd / kk:mm" type="date"/>
 							</td>
 							<td class="viewCnt">${anlist.viewCnt}</td>
 							
@@ -61,7 +61,7 @@
 							</td>
 							<td class="author">${bnlist.userId}</td>
 							<td class="createD">
-								<fmt:formatDate value="${bnlist.createDate}" pattern="MM.dd / kk:mm" type="date"/>
+								<fmt:formatDate value="${bnlist.modifyDate != null ? bnlist.modifyDate :  bnlist.createDate}" pattern="MM.dd / kk:mm" type="date"/>
 							</td>
 							<td class="viewCnt">${bnlist.viewCnt}</td>
 						</tr>
@@ -77,7 +77,7 @@
 							</td>
 							<td class="author">${blist.userId}</td>
 							<td class="createD">
-								<fmt:formatDate value="${blist.createDate}" pattern="MM.dd / kk:mm" type="date"/>
+								<fmt:formatDate value="${blist.modifyDate != null ? blist.modifyDate :  blist.createDate}" pattern="MM.dd / kk:mm" type="date"/>
 							</td>
 							<td class="viewCnt">${blist.viewCnt}</td>
 						</tr>

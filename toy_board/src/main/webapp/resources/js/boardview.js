@@ -10,4 +10,8 @@ function gotoWrite(){
 	location.href="write"
 }
 
+function goUpdate(id){
+	location.href="update?id="+id;
+}
+
  

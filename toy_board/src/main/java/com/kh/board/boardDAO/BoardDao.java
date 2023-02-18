@@ -146,7 +146,7 @@ public class BoardDao {
 		
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
-		String query = "SELECT ID, TITLE ,CONTENT, USER_ID, USER_PW ,CREATE_DATE ,MODI_DATE ,DEL_FLAG ,CATEGORY_NAME \r\n"
+		String query = "SELECT ID, TITLE ,CONTENT, USER_ID, USER_PW ,CREATE_DATE ,MODI_DATE ,DEL_FLAG ,CATEGORY_ID,CATEGORY_NAME \r\n"
 				+ "FROM TOY_BOARD b join CATEGORY c on b.CATEGORY =c.CATEGORY_ID\r\n"
 				+ " WHERE b.ID  = ?\r\n"
 				+ " AND del_flag ='N'";
@@ -165,6 +165,7 @@ public class BoardDao {
 				result.setCreateDate(rs.getDate("create_date"));
 				result.setModifyDate(rs.getDate("modi_date"));
 				result.setCategoryName(rs.getNString("category_name"));
+				result.setCategoryId(rs.getInt("category_id"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -231,5 +232,34 @@ public class BoardDao {
 		return calist;
 	}
 	
-	
+//게시글 수정
+	public int updateBoard(Connection conn, BoardDto dto) {
+		int result = -1;
+		
+		PreparedStatement pstmt = null;
+		String query = "UPDATE TOY_BOARD set TITLE = ?, CONTENT =?, CATEGORY=?,MODI_DATE =SYSTIMESTAMP "
+				+ " where id = ? and DEL_FLAG ='N'";
+		
+		try {
+			pstmt =conn.prepareStatement(query);
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setInt(3, dto.getCategoryId());
+			pstmt.setInt(4, dto.getId());
+			
+			
+			result = pstmt.executeUpdate();
+			System.out.println("1 성공 , 나머지 실패 : " + result);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JdbcConnect.close(pstmt);
+		}
+		
+		
+		
+		
+		return result;
+	}
 }

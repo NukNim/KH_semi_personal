@@ -41,7 +41,7 @@ public class AdminCheckController extends HttpServlet {
 		if(userid.equals("admin") && userpw.equals("admin")) {
 			out.append("1");			
 		}else {
-			out.append("해당 계정은 공지, 전체공지 작성에 접근할 수 없습니다.");
+			out.append("해당 정보로는 권한이 없습니다.");
 		}
 
 		out.flush();

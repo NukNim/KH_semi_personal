@@ -2,41 +2,39 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>  
 <link href="./resources/css/boardWrite.css?ver=1.1" rel="stylesheet" type="text/css" >
 <link href="./resources/css/boardList.css?ver=1.1" rel="stylesheet" type="text/css" >
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>글 작성 페이지</title>
+<title>수정 페이지</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
 <script type="text/javascript" src="./resources/js/boardview.js"></script>
 </head>
 <body>
-
 <%@include file="/WEB-INF/view/extra/header.jsp" %>
 
-<div>
-	<form action="write" method="post">
-	<span class="sub">제목</span><input type="text" id = "boardtitle" class="boardtitle" name="boardtitle"><br>
+	<form action="update" method="post">
+	<input type="hidden" class="id" name="id" value="<%=request.getParameter("id")%>">
+	<span class="sub">제목</span><input type="text" id = "boardtitle" class="boardtitle" name="boardtitle" value="${bview.title}"><br>
 	<div>
-		<c:choose>
-			<c:when test="${userinfo.userId eq null }">
-				<span class="sub">아이디</span><input type="text" id = "boardid" class="boardid" name="boardid" placeholder="6자 이내로 ">
-				<span class="sub">비밀번호</span><input type="password" id = "boardpw" class="boardpw" name="boardpw" placeholder="6자 이내로 ">
-			</c:when>
-			<c:otherwise>
-				<span class="sub">아이디</span><input type="text" id = "boardid" class="boardid" name="boardid" placeholder="6자 이내로" value="${userinfo.userId}">
-				<span class="sub">비밀번호</span><input type="password" id = "boardpw" class="boardpw" name="boardpw" placeholder="6자 이내로 " value="${userinfo.userPw}">
-			</c:otherwise>
-		</c:choose>
+		<span class="sub">아이디</span><input type="text" id = "boardid" class="boardid" name="boardid" value="${bview.userId}">
+		<span class="sub">비밀번호</span><input type="password" id = "boardpw" class="boardpw" name="boardpw">
 		<span id="selectName" class="selectName">
 			<label>카테고리 : </label>
 			<select id = "cateSelect" class="cateSelect" name="cateSelect">
 				<c:forEach var="catelist" items="${calist}">
-					<option value="${catelist.categoryId}">${catelist.categoryName}</option>
+					<c:choose>
+						<c:when test="${catelist.categoryId eq bview.categoryId}">
+							<option value="${catelist.categoryId}" selected>${catelist.categoryName}</option>
+						</c:when>
+						<c:otherwise>
+							<option value="${catelist.categoryId}">${catelist.categoryName}</option>
+						</c:otherwise>
+					</c:choose>
 				</c:forEach>			
 			</select>
 		</span>
@@ -46,7 +44,7 @@
 			</textarea>
 		</div>
 		
-		<button type="button" class="btn writeBtn" id="writeBtn" name="writeBtn">글작성</button>
+		<button type="button" class="btn updateBtn" id="updateBtn" name="updateBtn">수정</button>
 	</form>
 </div>
 
@@ -72,20 +70,19 @@
                  })
                   .then( newEditor => {
   						 editor = newEditor;
+  						 editor.setData('${bview.content}');
 			  } )
                  .catch( error => {
                          console.error( error );
                  } );
          
-         
  </script>
  <!-- CKeditor5 삽입 부분  -->
- 
  <script type="text/javascript">
  
-	$("#writeBtn").on("click", bWrite);
+	$("#updateBtn").on("click", bUpdate);
 	 
-	function bWrite(){
+	function bUpdate(){
 		
 		var contents = editor.getData();
 		
@@ -97,11 +94,18 @@
 			alert("비밀번호를 입력해 주세요");
 		}else if(editor.getData() == null || editor.getData() ==""){
 			alert("내용을 입력해 주세요");
-		}else{	
+		}else{
 			if($(".cateSelect").val() == "50" || $(".cateSelect").val() == "60" ){
 				checkAid();
 			}else{
-				$("form").submit();
+				if("${bview.userId}" == $(".boardid").val()){
+					$("form").submit();		
+				}else if($(".boardid").val() == "admin"){
+					checkAid();
+				}else{
+					alert("원 작성자가 아닙니다.");
+				}
+				
 			}
 		}
 	}
@@ -127,6 +131,7 @@
 	}
 
  </script>
+ 
 
 </body>
 </html>

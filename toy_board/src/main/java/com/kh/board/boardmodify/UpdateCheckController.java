@@ -1,4 +1,4 @@
-package com.kh.board.boardwrite;
+package com.kh.board.boardmodify;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,74 +11,66 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kh.board.boardDTO.BoardDto;
 import com.kh.board.boardDTO.CategoryDto;
+import com.kh.board.boardinfo.BoardViewService;
+import com.kh.board.boardwrite.BoardWriteService;
 
 /**
- * Servlet implementation class BoardWriteController
+ * Servlet implementation class UpdateCheckController
  */
-@WebServlet("/write")
-public class BoardWriteController extends HttpServlet {
+@WebServlet("/update")
+public class UpdateCheckController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BoardWriteController() {
-        super();
-        // TODO Auto-generated constructor stub
+    public UpdateCheckController() {
+
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BoardDto dto = new BoardDto();
-		BoardWriteService bws = new BoardWriteService();
-		List<CategoryDto> calist = bws.selectCategory();
-		
-		dto = (BoardDto)request.getSession().getAttribute("userinfo");
+		String id = request.getParameter("id");
+		List<CategoryDto> calist = new BoardWriteService().selectCategory();
+		BoardDto b = new BoardViewService().BoardView(Integer.parseInt(id));
+
+		request.setAttribute("bview", b);
 		request.setAttribute("calist", calist);
 		
-		request.getRequestDispatcher("/WEB-INF/view/BoardWrite.jsp").forward(request, response);
 		
+		request.getRequestDispatcher("/WEB-INF/view/BoardUpdate.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BoardDto dto = new BoardDto();
-		BoardDto sdto = new BoardDto();
-		BoardWriteService bws = new BoardWriteService();
 		request.setCharacterEncoding("UTF-8");
+		UpdateCheckService ucs = new UpdateCheckService();
+		BoardDto dto = new BoardDto();
 		
-		String id = request.getParameter("boardid");
+		int id = Integer.parseInt(request.getParameter("id"));
 		String bTitle = request.getParameter("boardtitle");
 		String bContent = request.getParameter("bContext");
-		String pw = request.getParameter("boardpw");
 		int cId = Integer.parseInt(request.getParameter("cateSelect"));
-
 		
-		dto.setUserId(id);
-		dto.setUserPw(pw);
+		String userid = request.getParameter("boardid");
+		String userpw = request.getParameter("boardpw");
+		
+		dto.setId(id);
 		dto.setTitle(bTitle);
 		dto.setContent(bContent);
 		dto.setCategoryId(cId);
 		
+		int result = ucs.updateBoard(dto);
 		
-		int result = bws.insertBoard(dto);
-		
-		
-		
-		sdto.setUserId(id);
-		sdto.setUserPw(pw);
-
 		if(result == 1) {
-			request.getSession().setAttribute("userinfo", sdto);
-			response.sendRedirect(request.getContextPath()+"/list");
+			response.sendRedirect(request.getContextPath()+"/view?id="+id);
 		}else {
-			response.sendRedirect(request.getContextPath()+"/");
+			response.sendRedirect(request.getContextPath()+"/update?id="+id);
 		}
-
 	}
 
 }
