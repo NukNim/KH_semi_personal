@@ -16,7 +16,7 @@ public class BoardDao {
 	public BoardDao() {
 		// TODO Auto-generated constructor stub
 	}
-	
+	//전체 공지 리스트 
 	public List<BoardDto> BorderList(Connection conn){
 		List<BoardDto> blist = new ArrayList<BoardDto>();
 		ResultSet rs = null;
@@ -59,7 +59,7 @@ public class BoardDao {
 		return blist;
 	}
 	
-	
+	//공지 리스트
 	public List<BoardDto> BoardNotiList(Connection conn){
 		List<BoardDto> bnlist = new ArrayList<BoardDto>();
 		ResultSet rs = null;
@@ -101,6 +101,7 @@ public class BoardDao {
 
 		return bnlist;
 	}
+	//전체 공지 리스트
 	public List<BoardDto> AllNotiList(Connection conn){
 		List<BoardDto> anlist = new ArrayList<BoardDto>();
 		ResultSet rs = null;
@@ -139,6 +140,7 @@ public class BoardDao {
 		return anlist;
 	}
 	
+	//게시판 상세 
 	public BoardDto selectView(Connection conn, int id) {
 		BoardDto result = new BoardDto();
 		
@@ -176,6 +178,7 @@ public class BoardDao {
 		return result;
 	}
 	
+	//게시글 작성 
 	public int insertBoard(Connection conn, BoardDto dto) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -200,7 +203,8 @@ public class BoardDao {
 
 		return result;
 	}
-
+	
+	//글 카테고리 목록 
 	public List<CategoryDto> selectCategory(Connection conn) {
 		List<CategoryDto> calist = null;
 		ResultSet rs = null;
@@ -226,5 +230,6 @@ public class BoardDao {
 		}
 		return calist;
 	}
+	
 	
 }
