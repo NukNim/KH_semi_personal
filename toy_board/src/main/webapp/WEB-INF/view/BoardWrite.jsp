@@ -108,7 +108,7 @@
 			url : "<%=request.getContextPath() %>/check.lo",
 			type : "post",
 			async : false,
-			data : {id : $(".boardid").val(), pw : $(".boardpw").val()},
+			data : {userid : $(".boardid").val(), userpw : $(".boardpw").val()},
 			success : function(result){
 				if(result === "1"){
 					$("form").submit();

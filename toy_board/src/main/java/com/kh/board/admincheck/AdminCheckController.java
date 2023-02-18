@@ -32,8 +32,8 @@ public class AdminCheckController extends HttpServlet {
 		
 		System.out.println("관리자 체크");
 		
-		String userid = request.getParameter("id");
-		String userpw = request.getParameter("pw");
+		String userid = request.getParameter("userid");
+		String userpw = request.getParameter("userpw");
 		
 		PrintWriter out = response.getWriter();
 		System.out.println("비교 아이디 :    " + userid);
