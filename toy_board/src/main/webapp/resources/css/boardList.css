@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+body{
+	margin: 0px;
+	padding: 0px;
+}
+
+a{
+	text-decoration: none;
+	
+}
+a:link{
+	color: black;
+}
+a:visited{
+	color: black;
+}
+a:hover{
+	text-decoration: underline;
+}
+
+
+#mainTitle{
+	background-color: black; 
+	color:white;
+	margin: 0px;
+	padding: 0px;
+	text-align: left;
+	font-size: 50px;
+	font-weight: bolder;
+	cursor: pointer;
+	
+}
+
+ #blist {
+	margin: auto;
+ 	margin-top : 30px;
+ 	margin-bottom : 30px;
+	width : 70%;
+	border-collapse: collapse; 
+} 
+
+th, td{
+	
+	border: 1px solid;
+	text-align: center;
+}
+
+
+.allNoti{
+	background-color: rgb(231, 226, 188);
+}
+.Noti{
+	background-color: rgb(176, 205, 240);
+}
+
+.title{
+	width : 40%;
+	position: relative;
+	text-align: left;
+}
+
+thead > tr> .title{
+	text-align: center;
+}
+

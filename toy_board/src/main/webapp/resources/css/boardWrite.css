@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+
+.sub{
+	font-weight: bold;
+	text-align: center;
+	padding: .75rem;
+}
+
+.boardtitle{
+	margin: .55rem;
+	margin-left: 1rem;
+}
+
+.boardid, .boardpw{
+	width: 100px;
+	margin-bottom: 20px;
+}
+
+.bContext{
+	width : 94%;
+	height : 500px;
+	margin: auto;
+	justify-content: center;
+}
+.ck-editor__editable {
+    min-height: 400px;
+    max-height: 400px;
+}
+
+.btn{
+	margin: 10px;
+	border-radius: 10px;
+	border:none;
+	cursor: pointer;
+	background: gray;
+	color: white;
+	width : 80px;
+	height: 24px;
+}
+
+
+
+.selectName {
+	float:right;
+	padding-right: 35px;
+	
+}
