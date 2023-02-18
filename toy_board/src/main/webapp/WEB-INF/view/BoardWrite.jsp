@@ -5,7 +5,6 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
-<script type="text/javascript" src="./resources/js/boardview.js"></script>
 <link href="./resources/css/boardWrite.css?ver=1.1" rel="stylesheet" type="text/css" >
 <link href="./resources/css/boardList.css?ver=1.1" rel="stylesheet" type="text/css" >
 <!DOCTYPE html>
@@ -32,7 +31,7 @@
 				<span class="sub">비밀번호</span><input type="password" id = "boardpw" class="boardpw" name="boardpw" placeholder="6자 이내로 " value="${userinfo.userPw}">
 			</c:otherwise>
 		</c:choose>
-		<span id="selectName" class="selectName"">
+		<span id="selectName" class="selectName">
 			<label>카테고리 : </label>
 			<select id = "cateSelect" class="cateSelect" name="cateSelect">
 				<c:forEach var="catelist" items="${calist}">
@@ -50,13 +49,43 @@
 	</form>
 </div>
 
-<script type="text/javascript">
-
-	 $("#writeBtn").on("click", bWrite);
+ <script>
+ let editor;
+         ClassicEditor
+                 .create( document.querySelector('#editor'), {
+                 	toolbar: {
+                 		items: [
+                 			'bold',
+                 			'italic',
+                 			'|',
+                 			'outdent',
+                 			'indent',
+                 			'|',
+                 			'blockQuote',
+                 			'undo',
+                 			'redo'
+                 		]
+                 	},
+                 	language: 'ko'
+                 })
+                  .then( newEditor => {
+  						 editor = newEditor;
+			  } )
+                 .catch( error => {
+                         console.error( error );
+                 } );
+         
+ </script>
+ 
+ 
+ <script type="text/javascript">
+ 
+	$("#writeBtn").on("click", bWrite);
 	 
 	function bWrite(){
 		
-		var contents = editor.getData()
+		var contents = editor.getData();
+		
 		if($(".boardtitle").val() == null || $(".boardtitle").val() ==""){
 			alert("제목을 입력해 주세요");	
 		}else if($(".boardid").val() == null || $(".boardid").val() ==""){
@@ -65,39 +94,36 @@
 			alert("비밀번호를 입력해 주세요");
 		}else if(editor.getData() == null || editor.getData() ==""){
 			alert("내용을 입력해 주세요");
-		}else{
-			$("form").submit();
+		}else{	
+			if($(".cateSelect").val() == "50" || $(".cateSelect").val() == "60" ){
+				checkAid();
+			}else{
+				$("form").submit();
+			}
 		}
-	} 
+	}
+	
+	function checkAid(){
+		$.ajax({
+			url : "<%=request.getContextPath() %>/check.lo",
+			type : "post",
+			async : false,
+			data : {id : $(".boardid").val(), pw : $(".boardpw").val()},
+			success : function(result){
+				if(result === "1"){
+					$("form").submit();
+				}else{
+					alert(result);
+				}
+			},
+			error : function(request, status, error){
+				alert(request.statis)
+				console.log(result + "error");
+			}
+		});
+	}
 
-</script>
-      <script>
-      let editor;
-              ClassicEditor
-                      .create( document.querySelector( '#editor' ), {
-                      	toolbar: {
-                      		items: [
-                      			'bold',
-                      			'italic',
-                      			'|',
-                      			'outdent',
-                      			'indent',
-                      			'|',
-                      			'blockQuote',
-                      			'undo',
-                      			'redo'
-                      		]
-                      	},
-                      	language: 'ko'
-                      })
-                       .then( newEditor => {
-       						 editor = newEditor;
-    				  } )
-                      .catch( error => {
-                              console.error( error );
-                      } );
-              
-      </script>
+ </script>
 
 </body>
 </html>
