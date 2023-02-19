@@ -40,7 +40,6 @@ public class BoardPaging {
 	public List<Integer> getPageList() {
 		int start = 0;
 		int end = listLimit;
-		System.out.println(end);
 		if(currentPage > (listLimit/2) +1) {
 			start = currentPage - (listLimit/2 +1);
 			end = currentPage + (listLimit/2) - (listLimit%2 == 0? 1: 0);
@@ -48,7 +47,6 @@ public class BoardPaging {
 		if(end>lastPage) {
 			end = lastPage;
 		}
-		System.out.println(end+"awdsfssadf"+start);
 		return pageList.subList(start, end);
 	}
 	
