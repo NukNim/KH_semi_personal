@@ -232,7 +232,7 @@ public class BoardDao {
 		return calist;
 	}
 	
-//게시글 수정
+	//게시글 수정
 	public int updateBoard(Connection conn, BoardDto dto) {
 		int result = -1;
 		
@@ -251,15 +251,60 @@ public class BoardDao {
 			result = pstmt.executeUpdate();
 			System.out.println("1 성공 , 나머지 실패 : " + result);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			JdbcConnect.close(pstmt);
 		}
+		return result;
+	}
+	
+	//게시글 삭제 
+	public int deleteBoard(Connection conn, BoardDto dto) {
+		int result = -1;
+		
+		PreparedStatement pstmt = null;
+		String query = "UPDATE TOY_BOARD set DEL_FLAG = 'Y' "
+				+ " where id = ? and DEL_FLAG ='N'";
+		
+		try {
+			pstmt =conn.prepareStatement(query);
+			pstmt.setInt(1, dto.getId());
+			
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JdbcConnect.close(pstmt);
+		}
+		return result;
+	}
+	
+	//입력한 아이디 체크
+	public int userIdCheck(Connection conn, BoardDto dto) {	
+		int result = -1;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query ="SELECT COUNT(*) AS cnt from TOY_BOARD tb where id=? "
+				+ " AND  USER_ID =? AND  USER_PW =?";
 		
 		
-		
-		
+		try {
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, dto.getId());
+			pstmt.setString(2, dto.getUserId());
+			pstmt.setString(3, dto.getUserPw());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 		return result;
 	}
 }

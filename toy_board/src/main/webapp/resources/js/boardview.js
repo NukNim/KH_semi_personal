@@ -13,5 +13,8 @@ function gotoWrite(){
 function goUpdate(id){
 	location.href="update?id="+id;
 }
+function goDelete(id){
+	location.href="delete?id="+id;
+}
 
  

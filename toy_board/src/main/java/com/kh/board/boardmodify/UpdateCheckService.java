@@ -18,4 +18,40 @@ public class UpdateCheckService {
 		
 		return result;
 	}
+	
+	public int deleteBoard(BoardDto dto) {
+		Connection conn = JdbcConnect.getConnection();
+		int result = -1;
+		
+		result = new BoardDao().deleteBoard(conn, dto);
+		
+		JdbcConnect.close(conn);
+		
+		return result;
+	}
+	
+	public int deleteadmin(BoardDto dto) {
+		Connection conn = JdbcConnect.getConnection();
+		int result = -1;
+		
+		result = new BoardDao().deleteBoard(conn, dto);
+		
+		JdbcConnect.close(conn);
+		
+		return result;
+	}
+	
+	
+	public int userIdCheck(BoardDto dto) {
+		
+		Connection conn = JdbcConnect.getConnection();
+		int result = -1;
+		
+		result = new BoardDao().userIdCheck(conn, dto);
+		
+		JdbcConnect.close(conn);
+		
+		return result;
+		
+	}
 }
