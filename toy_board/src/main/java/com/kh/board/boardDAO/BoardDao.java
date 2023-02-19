@@ -307,4 +307,24 @@ public class BoardDao {
 
 		return result;
 	}
+	
+	public int increaseView(Connection conn, int id) {
+		int result = -1;
+		
+		PreparedStatement pstmt = null;
+		String query = "UPDATE TOY_BOARD set VIEW_CNT = VIEW_CNT+1 where id = ? and DEL_FLAG ='N'";
+		
+		try {
+			pstmt =conn.prepareStatement(query);
+			pstmt.setInt(1, id);
+			
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JdbcConnect.close(pstmt);
+		}
+		return result;
+	}
 }

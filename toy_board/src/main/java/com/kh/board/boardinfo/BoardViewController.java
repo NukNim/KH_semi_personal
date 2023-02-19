@@ -31,7 +31,7 @@ public class BoardViewController extends HttpServlet {
 		String id = request.getParameter("id");
 		
 		BoardDto b = new BoardViewService().BoardView(Integer.parseInt(id));
-		
+		new BoardViewService().increaseView(id);
 		request.setAttribute("bview", b);
 		
 		

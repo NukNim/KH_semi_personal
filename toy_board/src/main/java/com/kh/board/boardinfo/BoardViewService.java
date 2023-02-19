@@ -19,4 +19,13 @@ public class BoardViewService {
 		return bview;
 		
 	}
+	
+	public int increaseView(String id) {
+		int result = -1;
+		
+		Connection conn = JdbcConnect.getConnection();
+		result = new BoardDao().increaseView(conn, Integer.parseInt(id));
+		
+		return result;
+	}
 }
