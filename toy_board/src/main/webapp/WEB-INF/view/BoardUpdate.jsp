@@ -19,6 +19,7 @@
 
 	<form action="update" method="post">
 	<input type="hidden" class="id" name="id" value="<%=request.getParameter("id")%>">
+	<input type="hidden" class="pNum" name="pNum" value="<%=request.getParameter("p")%>">
 	<span class="sub">제목</span><input type="text" id = "boardtitle" class="boardtitle" name="boardtitle" value="${bview.title}"><br>
 	<div>
 		<span class="sub">아이디</span><input type="text" id = "boardid" class="boardid" name="boardid" value="${bview.userId}">

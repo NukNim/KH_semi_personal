@@ -38,8 +38,8 @@
 	</div>
 
 	<div style="float: right;">
-		<button type="button" onclick="intoList()" class="btn intoList">목록으로</button>	
-		<button type="button" onclick="goUpdate(${bview.id})" class="btn" name="updateCheck">수정</button>	
+		<button type="button" onclick="intoList(${param.p})" class="btn intoList">목록으로</button>	
+		<button type="button" onclick="goUpdate(${bview.id},${param.p} )" class="btn" name="updateCheck">수정</button>	
 		<button type="button" onclick="goDelete(${bview.id})" class="btn" name="updateCheck">삭제</button>	
 	</div>
 

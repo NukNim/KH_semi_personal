@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.kh.board.boardDTO.BoardDto;
 import com.kh.board.boardDTO.CategoryDto;
@@ -16,7 +18,7 @@ public class BoardDao {
 	public BoardDao() {
 		// TODO Auto-generated constructor stub
 	}
-	//전체 공지 리스트 
+	//전체 게시판 리스트 
 	public List<BoardDto> BorderList(Connection conn){
 		List<BoardDto> blist = new ArrayList<BoardDto>();
 		ResultSet rs = null;
@@ -327,4 +329,81 @@ public class BoardDao {
 		}
 		return result;
 	}
+	
+	//전체 게시글 페이징 
+	public List<BoardDto> PagingList(Connection conn, Map page){
+		List<BoardDto> blist = new ArrayList<BoardDto>();
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		String query = "SELECT ID, TITLE ,CONTENT, USER_ID, USER_PW ,CREATE_DATE ,MODI_DATE ,DEL_FLAG ,CATEGORY_NAME, VIEW_CNT\r\n"
+				+ "from(\r\n"
+				+ "SELECT rownum as n, ID, TITLE ,CONTENT, USER_ID, USER_PW ,CREATE_DATE ,MODI_DATE ,DEL_FLAG ,CATEGORY_NAME, VIEW_CNT \r\n"
+				+ "FROM TOY_BOARD b join CATEGORY c on b.CATEGORY =c.CATEGORY_ID\r\n"
+				+ " WHERE c.CATEGORY_ID != (60)\r\n"
+				+ " AND del_flag ='N'\r\n"
+				+ " ORDER BY ID DESC\r\n"
+				+ " )\r\n"
+				+ " where n BETWEEN ? and ?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, (int)page.get("start"));
+			pstmt.setInt(2, (int)page.get("end"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				do {
+					BoardDto b = new BoardDto();
+					b.setId(rs.getInt("id"));
+					b.setTitle(rs.getString("title"));
+					b.setContent(rs.getString("content"));
+					b.setUserId(rs.getString("user_id"));
+					b.setUserPw(rs.getString("user_pw"));
+					b.setDelFlag(rs.getString("del_flag"));
+					b.setCreateDate(rs.getDate("create_date"));
+					b.setModifyDate(rs.getDate("modi_date"));
+					b.setCategoryName(rs.getNString("category_name"));
+					b.setViewCnt(rs.getInt("VIEW_CNT"));
+					
+					blist.add(b);
+
+				} while (rs.next());
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JdbcConnect.close(rs);
+			JdbcConnect.close(pstmt);	
+		}
+
+		return blist;
+	}
+	
+	public int totalRow(Connection conn) {
+		int result = -1;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query ="SELECT COUNT(*) as cnt from TOY_BOARD where DEL_FLAG ='N'";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JdbcConnect.close(rs);
+			JdbcConnect.close(pstmt);	
+		}
+		
+		System.out.println("토탈 로우 : " + result);
+		return result;
+	}
+	
+	
+	
 }

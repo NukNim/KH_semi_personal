@@ -64,3 +64,12 @@ thead > tr> .title{
 	text-align: center;
 }
 
+.page-item{
+	display:inline-block;
+	border: solid;
+	border-color : #B4C3FF;
+	background-color : #B4C3FF;
+	width: 33px;
+}
+
+

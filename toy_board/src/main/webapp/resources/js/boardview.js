@@ -2,16 +2,19 @@
  * 게시판 상세 페이지 
  */
  
- function intoList(){
-	location.href="list"
+ function intoHome(){
+	location.href="list";
+}
+ function intoList(p){
+	location.href="list?p="+p;
 }
 
 function gotoWrite(){
-	location.href="write"
+	location.href="write";
 }
 
-function goUpdate(id){
-	location.href="update?id="+id;
+function goUpdate(id, p){
+	location.href="update?id="+id+"&p="+p;
 }
 function goDelete(id){
 	location.href="delete?id="+id;

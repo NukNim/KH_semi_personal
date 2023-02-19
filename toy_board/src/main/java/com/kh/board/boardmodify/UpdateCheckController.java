@@ -67,9 +67,9 @@ public class UpdateCheckController extends HttpServlet {
 		int result = ucs.updateBoard(dto);
 		
 		if(result == 1) {
-			response.sendRedirect(request.getContextPath()+"/view?id="+id);
+			response.sendRedirect(request.getContextPath()+"/view?id="+id+"&p="+request.getParameter("pNum"));
 		}else {
-			response.sendRedirect(request.getContextPath()+"/update?id="+id);
+			response.sendRedirect(request.getContextPath()+"/update?id="+id+"&p="+request.getParameter("pNum"));
 		}
 	}
 
