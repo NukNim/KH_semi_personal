@@ -58,15 +58,16 @@
 	</div>
 	
 	
-	<div>
+	<div class="commentBody">
 	<c:forEach var="clist" items="${clist}">
-		<span>${clist.userId}</span><br>
-		<span>=========================</span>
-		<span>${clist.userPw}</span><br>
-		<span>=========================</span>
-		<span>${clist.context}</span>
-		<span>=========================</span>
+		<div class="commentList">
+		<input type="text" class="commentListId" name="commentListId" value="${clist.userId}" disabled="disabled">
+		<input type="password"  class="commentListPw" name="commentListPw" value="${clist.userPw}" disabled="disabled">
+		<textarea class="Listcomment" disabled="disabled" >${clist.context} </textarea>
+		</div>
 	</c:forEach>
+	</div>
+	<div>
 	</div>
 	
 	<script type="text/javascript">

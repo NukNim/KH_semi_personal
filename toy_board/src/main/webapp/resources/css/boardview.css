@@ -76,6 +76,20 @@
 }
 
 
+.commentBody{
+	margin-bottom: 10%;
+}
+
 .commentId, .commentPw{
 	width : 120px;
+}
+
+.commentList{
+	margin-left: 10%;
+}
+
+.Listcomment{
+	resize: none;
+	width : 87%;
+	height: 30px;
 }
