@@ -59,15 +59,17 @@
 	
 	
 	<div class="commentBody">
-	<c:forEach var="clist" items="${clist}">
-		<div class="commentList">
-		<input type="text" class="commentListId" name="commentListId" value="${clist.userId}" disabled="disabled">
-		<input type="password"  class="commentListPw" name="commentListPw" value="${clist.userPw}" disabled="disabled">
-		<textarea class="Listcomment" disabled="disabled" >${clist.context} </textarea>
-		</div>
-	</c:forEach>
+		<c:forEach var="clist" items="${clist}">
+				<input type="text" class="commentListId" name="commentListId" value="${clist.userId}" disabled="disabled">
+				<input type="password"  class="commentListPw" name="commentListPw" value="${clist.userPw}" disabled="disabled">
+			<textarea class="Listcomment" disabled="disabled" >${clist.context} </textarea>
+		</c:forEach>
 	</div>
+	
+	
+	
 	<div>
+		<button type="button" class="btn totop">맨 위로</button>
 	</div>
 	
 	<script type="text/javascript">
@@ -87,6 +89,10 @@
 			}
 		}
 
+	$(".totop").click(function(){
+		  window.scrollTo({top : 0, behavior: 'auto'}); 
+		});
+	
  </script>
 	
 	

@@ -77,7 +77,7 @@
 
 
 .commentBody{
-	margin-bottom: 10%;
+	padding-bottom: 30px;
 }
 
 .commentId, .commentPw{
@@ -86,10 +86,22 @@
 
 .commentList{
 	margin-left: 10%;
+	border-style:groove; 
+
 }
 
 .Listcomment{
+	border-style:dashed;
+	margin-left: 10%;
 	resize: none;
 	width : 87%;
 	height: 30px;
+	background-color: #AEE2F9;
+}
+
+.commentListId, .commentListPw{
+	width: 80px;
+}
+.commentListId{
+	margin-left: 10%;
 }
