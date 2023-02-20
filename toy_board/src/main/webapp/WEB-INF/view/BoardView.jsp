@@ -43,6 +43,51 @@
 		<button type="button" onclick="goDelete(${bview.id})" class="btn" name="updateCheck">삭제</button>	
 	</div>
 
+	<div class="commentbox">
+		<form id="step1" action="commentReg" method="post">
+			<div class="commentInfo">
+				<input type="hidden" id="boardId" class="boardId" name="boardId" value="${param.id }">
+				<input type="hidden" id="pNum" class="pNum" name="pNum" value="${param.p }">
+				<input type="hidden" id="stepType" class="stepType" name="stepType" value="1">
+				<input type="text" id="commentId" class="commentId" name="commentId" placeholder="아이디">
+				<input type="password" id="commentPw" class="commentPw" name="commentPw" placeholder="비밀번호">
+			</div>
+			<textarea id="comment" class="comment" name="comment"></textarea>
+			<button type="button" id="regComment" class="btn regComment">등록</button>
+		</form>
+	</div>
+	
+	
+	<div>
+	<c:forEach var="clist" items="${clist}">
+		<span>${clist.userId}</span><br>
+		<span>=========================</span>
+		<span>${clist.userPw}</span><br>
+		<span>=========================</span>
+		<span>${clist.context}</span>
+		<span>=========================</span>
+	</c:forEach>
+	</div>
+	
+	<script type="text/javascript">
+ 
+	$("#regComment").on("click", cWrite);
+	 
+	function cWrite(){
+		
+		 if($(".commentId").val() == null || $(".commentId").val() ==""){
+			alert("아이디를 입력해 주세요");
+		}else if($(".commentPw").val() == null || $(".commentPw").val() ==""){
+			alert("비밀번호를 입력해 주세요");
+		}else if($(".comment") == null || $(".comment") ==""){
+			alert("내용을 입력해 주세요");
+		}else{	
+				$("#step1").submit();
+			}
+		}
 
+ </script>
+	
+	
 </body>
 </html>
