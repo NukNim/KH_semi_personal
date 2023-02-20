@@ -339,8 +339,7 @@ public class BoardDao {
 				+ "from(\r\n"
 				+ "SELECT rownum as n, ID, TITLE ,CONTENT, USER_ID, USER_PW ,CREATE_DATE ,MODI_DATE ,DEL_FLAG ,CATEGORY_NAME, VIEW_CNT \r\n"
 				+ "FROM TOY_BOARD b join CATEGORY c on b.CATEGORY =c.CATEGORY_ID\r\n"
-				+ " WHERE c.CATEGORY_ID != (60)\r\n"
-				+ " AND del_flag ='N'\r\n"
+				+ " WHERE del_flag ='N'\r\n"
 				+ " ORDER BY ID DESC\r\n"
 				+ " )\r\n"
 				+ " where n BETWEEN ? and ?";
