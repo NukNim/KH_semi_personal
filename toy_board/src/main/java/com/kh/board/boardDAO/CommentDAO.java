@@ -54,11 +54,8 @@ public class CommentDAO {
 			pstmt.setInt(1, id);
 			
 			rs = pstmt.executeQuery();
-			System.out.println("쿼리 실행");
 			while(rs.next()) {
 				CommentDTO cdto = new CommentDTO();
-				
-				System.out.println("쿼리 실행값 넣는중");
 				
 				cdto.setUserId(rs.getString("USER_ID"));
 				cdto.setUserPw(rs.getString("USER_PW"));

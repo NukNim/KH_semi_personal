@@ -47,9 +47,6 @@ public class BoardCommentController extends HttpServlet {
 		BoardCommentService bcs = new BoardCommentService();
 		
 		int result = bcs.insertComment(dto);
-		if(result == 1) {
-			System.out.println("성공");
-		}
 		
 		response.sendRedirect(request.getContextPath()+"/view?id="+boardId+"&p="+pNum);
 		
