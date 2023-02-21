@@ -43,7 +43,7 @@ public class CommentDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		String query = "select rownum as N, bc.user_id, bc.user_pw, bc.context, bc.reg_date, bc.comment_step"
+		String query = "select rownum as N, bc.comment_id ,bc.user_id, bc.user_pw, bc.context, bc.reg_date, bc.comment_step"
 				+ "     from BOARD_COMMENT bc join TOY_BOARD tb on bc.ref_id = tb.id"
 				+ "     where bc.ref_id = ? and comment_step = 1"
 				+ "     order by bc.comment_id desc";
@@ -57,6 +57,7 @@ public class CommentDAO {
 			while(rs.next()) {
 				CommentDTO cdto = new CommentDTO();
 				
+				cdto.setCommentId(rs.getInt("COMMENT_ID"));
 				cdto.setUserId(rs.getString("USER_ID"));
 				cdto.setUserPw(rs.getString("USER_PW"));
 				cdto.setContext(rs.getString("CONTEXT"));

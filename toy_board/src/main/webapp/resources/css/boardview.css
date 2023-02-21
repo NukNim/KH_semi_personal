@@ -94,14 +94,27 @@
 	border-style:dashed;
 	margin-left: 10%;
 	resize: none;
-	width : 87%;
+	width : 78%;
 	height: 30px;
 	background-color: #AEE2F9;
 }
 
-.commentListId, .commentListPw{
-	width: 80px;
-}
 .commentListId{
+	margin-bottom: 5px;
+}
+.commentListId, .commentListPw{
+	display : none;
+	width: 80px;
 	margin-left: 10%;
+}
+
+
+.buttonbox{
+	display : none;
+	margin-left: 10%;
+}
+
+.commentUserId{
+	margin-left: 10%;
+	font-size: 7px;
 }

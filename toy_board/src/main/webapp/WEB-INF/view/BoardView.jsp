@@ -3,8 +3,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>    
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script type="text/javascript" src="./resources/js/boardview.js"></script>
 <link rel="stylesheet" type="text/css" href="./resources/css/boardview.css">
 <link rel="stylesheet" type="text/css" href="./resources/css/boardList.css">
 <!DOCTYPE html>
@@ -12,7 +10,8 @@
 <head>
 <meta charset="UTF-8">
 <title>게시판 상세</title>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script type="text/javascript" src="./resources/js/boardview.js"></script>
 </head>
 <body>
 <%@include file="/WEB-INF/view/extra/header.jsp" %>
@@ -60,14 +59,23 @@
 	
 	<div class="commentBody">
 		<c:forEach var="clist" items="${clist}">
-				<input type="text" class="commentListId" name="commentListId" value="${clist.userId}" disabled="disabled">
-				<input type="password"  class="commentListPw" name="commentListPw" value="${clist.userPw}" disabled="disabled">
-			<textarea class="Listcomment" disabled="disabled" >${clist.context} </textarea>
+			<span class="commentUserId">아이디 : ${clist.userId}</span>
+			<div class="recommentbox ${clist.commentId}box">
+				<form class="commentForm" action="commentReg" method="post">
+					<input type="hidden" class="commReqId" name="commReqId" value="${clist.commentId}">
+					<input type="hidden"  class="boardId" name="boardId" value="${param.id }">
+					<input type="hidden"  class="stepType" name="stepType" value="2">
+					<input type="text" class="commentListId" name="commentListId" value="${clist.userId}">
+					<input type="password"  class="commentListPw" name="commentListPw">
+					<textarea class="Listcomment" disabled="disabled" >${clist.context} </textarea>
+				</form>
+				<div class="buttonbox" >
+					<button type="button" id="commentModi" class="btn commentModi">수정</button>
+					<button type="button" id="commentDel" class="btn commentDel">삭제</button>
+				</div>
+			</div>
 		</c:forEach>
 	</div>
-	
-	
-	
 	<div>
 		<button type="button" class="btn totop">맨 위로</button>
 	</div>
@@ -92,6 +100,19 @@
 	$(".totop").click(function(){
 		  window.scrollTo({top : 0, behavior: 'auto'}); 
 		});
+	
+	$(".recommentbox").on("click", function(e){
+		e.preventDefault();
+			$(this).children(".buttonbox").css('display', 'block');
+			$(this).children(".commentForm").children(".commentListId").css('display', 'block');
+			$(this).children(".commentForm").children(".commentListPw").css('display', 'block');
+			$('.recommentbox').not($(this)).children(".buttonbox").css('display', 'none');
+			$('.recommentbox').not($(this)).children(".commentForm").children(".commentListId").css('display', 'none');
+			$('.recommentbox').not($(this)).children(".commentForm").children(".commentListPw").css('display', 'none');
+	})
+	
+	
+	
 	
  </script>
 	
