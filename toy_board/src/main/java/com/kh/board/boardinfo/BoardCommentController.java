@@ -29,12 +29,12 @@ public class BoardCommentController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String step = request.getParameter("stepType");
 		String boardId = request.getParameter("boardId");
 		String pNum = request.getParameter("pNum");
 		String userId = request.getParameter("commentId");
 		String userPw = request.getParameter("commentPw");
 		String comment = request.getParameter("comment");
-		String step = request.getParameter("stepType");
 
 		
 		CommentDTO dto = new CommentDTO();
