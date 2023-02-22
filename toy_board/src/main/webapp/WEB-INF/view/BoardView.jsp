@@ -59,9 +59,10 @@
 	
 	<div class="commentBody">
 		<c:forEach var="clist" items="${clist}">
-			<span class="commentUserId">아이디 : ${clist.userId}</span>
-			<div class="recommentbox ${clist.commentId}box">
-				<form class="commentForm" action="commentReg" method="post">
+			<span class="commentUserId step${clist.commentStep}">아이디 : ${clist.userId}</span>
+			<button type="button" class="sbtn showRecomment" style="display: none;">답글</button>
+			<div class="recommentbox${clist.commentStep}">
+				<form class="commentForm" action="" method="post">
 					<input type="hidden" class="commId" name="commId" value="${clist.commentId}">
 					<input type="hidden" class="pNum" name="pNum" value="${param.p}">
 					<input type="hidden"  class="boardId" name="boardId" value="${param.id }">
@@ -69,11 +70,14 @@
 					<input type="text" class="commentListId" name="commentListId" value="${clist.userId}">
 					<input type="password"  class="commentListPw" name="commentListPw">
 					<textarea class="Listcomment" disabled>${clist.context} </textarea>
+					<textarea class="recomment"></textarea>
+					
 				</form>
 				<div class="buttonbox" >
 					<button type="button" id="commentModi" class="btn commentChange" style="display: inline-block">수정</button>
 					<button type="button" id="commentModi" class="btn commentModi" style="display: none">수정확인</button>
 					<button type="button" id="commentDel" class="btn commentDel">삭제</button>
+					<button type="button"  class="btn reCommentReg">답글등록</button>
 				</div>
 			</div>
 		</c:forEach>
@@ -88,6 +92,11 @@
 	$(".commentChange").on("click", cChange);
 	$(".commentModi").on("click", cModify);
 	$(".commentDel").on("click", cDelete);
+	$(".showRecomment").on("click", function () {
+		$(this).next().find(".commentForm").find(".recomment").css("display","inline-block");
+		$(this).next().find(".buttonbox").find(".reCommentReg").css("display","inline-block");
+	});
+	$(".reCommentReg").on("click", recWrite);
 	
 	function cChange(){
 		
@@ -145,21 +154,39 @@
 			CommentDelete();
 			}
 		}
+	
+	function recWrite(){
+		
+		var formId = $(this).parent().prev(".commentForm");
+		
+		 if(formId.find(".commentListId").val() == null || formId.find(".commentListId").val() ==""){
+			alert(" 댓글에 답글을 달을 아이디를 입력해 주세요");
+		}else if(formId.find(".commentListPw").val() == null || formId.find(".commentListPw").val() ==""){
+			alert("댓글에 답글을 달을 비밀번호를 입력해 주세요");
+		}else if(formId.find(".Listcomment").val() == null || formId.find(".Listcomment").val() ==""){
+			alert("내용을 입력해 주세요");
+		}else{
+			RecommentReg();
+			}
+		}
 
 	$(".totop").click(function(){
 		  window.scrollTo({top : 0, behavior: 'auto'}); 
 		});
 	
-	$(".recommentbox").on("click", function(e){
+	$(".recommentbox1").on("click", function(e){
 		e.preventDefault();
 			$(this).children(".buttonbox").css('display', 'block');
 			$(this).children(".commentForm").children(".commentListId").css('display', 'block');
 			$(this).children(".commentForm").children(".commentListPw").css('display', 'block');
 			$(this).addClass("selectbox");
-			$('.recommentbox').not($(this)).children(".buttonbox").css('display', 'none');
-			$('.recommentbox').not($(this)).children(".commentForm").children(".commentListId").css('display', 'none');
-			$('.recommentbox').not($(this)).children(".commentForm").children(".commentListPw").css('display', 'none');
-			$('.recommentbox').not($(this)).removeClass("selectbox");
+			$(this).prev().css('display', 'block');
+			$('.recommentbox1').not($(this)).children(".buttonbox").css('display', 'none');
+			$('.recommentbox1').not($(this)).children(".commentForm").children(".commentListId").css('display', 'none');
+			$('.recommentbox1').not($(this)).children(".commentForm").children(".commentListPw").css('display', 'none');
+			$('.recommentbox1').not($(this)).children(".commentForm").children(".recomment").css('display', 'none');
+			$('.recommentbox1').not($(this)).removeClass("selectbox");
+			$('.recommentbox1').not($(this)).prev().css('display', 'none');
 	})
 
 	
@@ -223,6 +250,31 @@
 			async : false,
 			data : {userid : formId.find(".commentListId").val(), userpw : formId.find(".commentListPw").val()
 					, commid : formId.find(".commId").val()},
+			success : function(result){
+				if(result === "1"){
+					location.reload();
+				}else{
+					alert(result);
+				}
+			},
+			error : function(request, status, error){
+				alert(request.statis)
+				console.log(result + "error");
+			}
+		});
+	}
+	
+	function RecommentReg(){
+		
+		var formId = $(".selectbox").find(".commentForm");
+		
+		$.ajax({
+			url : "<%=request.getContextPath() %>/recommreg.lo",
+			type : "post",
+			async : false,
+			data : {userid : formId.find(".commentListId").val(), userpw : formId.find(".commentListPw").val()
+					, commid : formId.find(".commId").val(), boardId : formId.find(".boardId").val()
+					, context : formId.find(".recomment").val(), step : formId.find(".stepType").val()},
 			success : function(result){
 				if(result === "1"){
 					location.reload();

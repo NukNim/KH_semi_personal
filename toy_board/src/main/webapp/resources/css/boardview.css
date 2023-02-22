@@ -118,3 +118,43 @@
 	margin-left: 10%;
 	font-size: 7px;
 }
+
+.sbtn{
+	position : relative;
+	border-radius: 10px;
+	border: none;
+	cursor: pointer;
+	background: #5a5a5a	;
+	color: white;
+	width : 50px;
+	height: 20px;
+	left: 250px;
+	top:-20px;
+	
+}
+
+
+.recomment{
+	border-style:inset;
+	margin-left: 14%;
+	margin-top : 5px;
+	resize: none;
+	width : 74%;
+	height: 30px;
+	display: none;
+}
+
+.reCommentReg{
+	display: none;
+}
+
+.step2{
+	margin-left: 14%;
+}
+
+.recommentbox2 > .commentForm > .Listcomment{
+	margin-left: 14%;
+	border-style:inset;
+	background-color: #BEF5BE;
+	
+}

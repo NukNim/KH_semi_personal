@@ -15,8 +15,15 @@ public class CommentDAO {
 	
 	public int insertComment(Connection conn, CommentDTO dto) {
 		int result = -1;
-		String query = "insert into BOARD_COMMENT (COMMENT_ID, REF_ID, USER_ID, USER_PW, CONTEXT, REG_DATE, COMMENT_STEP)\r\n"
-				+ "VALUES(COMMENT_SEQ.NEXTVAL, ?, ?, ?, ?, SYSTIMESTAMP, ?)";
+		String query = "";
+		if(dto.getCommentStep() == 1) {
+			query = "insert into BOARD_COMMENT (COMMENT_ID, REF_ID, USER_ID, USER_PW, CONTEXT, REG_DATE, COMMENT_STEP,COMM_REF_ID)"
+					+ "VALUES(COMMENT_SEQ.NEXTVAL, ?, ?, ?, ?, SYSTIMESTAMP, ?,COMMENT_SEQ.NEXTVAL)";
+		}else {
+			query = "insert into BOARD_COMMENT (COMMENT_ID, REF_ID, USER_ID, USER_PW, CONTEXT, REG_DATE, COMMENT_STEP,COMM_REF_ID)"
+					+ "VALUES(COMMENT_SEQ.NEXTVAL, ?, ?, ?, ?, SYSTIMESTAMP, ?,?)";
+		}
+			
 		PreparedStatement pstmt = null;
 		
 		try {
@@ -27,6 +34,10 @@ public class CommentDAO {
 			pstmt.setString(3, dto.getUserPw());
 			pstmt.setString(4, dto.getContext());
 			pstmt.setInt(5, dto.getCommentStep());
+			
+			if(dto.getCommentStep() != 1) {
+				pstmt.setInt(6, dto.getCommentRefId());
+			}
 			
 			result = pstmt.executeUpdate();
 
@@ -45,8 +56,8 @@ public class CommentDAO {
 		
 		String query = "select rownum as N, bc.comment_id ,bc.user_id, bc.user_pw, bc.context, bc.reg_date, bc.comment_step"
 				+ "     from BOARD_COMMENT bc join TOY_BOARD tb on bc.ref_id = tb.id"
-				+ "     where bc.ref_id = ? and comment_step = 1"
-				+ "     order by bc.comment_id desc";
+				+ "     where bc.ref_id = ?"
+				+ "     order by ref_id DESC , comm_ref_id DESC, comment_step ASC, COMMENT_id DESC";
 		
 		
 		try {
