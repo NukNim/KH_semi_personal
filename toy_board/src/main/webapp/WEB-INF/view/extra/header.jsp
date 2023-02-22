@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 	<div id="mainTitle" onclick="intoHome()" class="" name="">
-		<span>게시판로고</span>
+		<span>&nbsp&nbsp게시판로고</span>
 	</div>
 	
 	
