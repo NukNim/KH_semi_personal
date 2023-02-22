@@ -141,7 +141,7 @@ public class CommentDAO {
 		int result = -1;
 		PreparedStatement pstmt = null;
 		String query = "DELETE FROM BOARD_COMMENT "
-				+ "  WHERE COMMENT_ID = ?";
+				+ "  WHERE COMM_REF_ID = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
