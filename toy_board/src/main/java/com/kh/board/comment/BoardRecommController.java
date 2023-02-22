@@ -1,6 +1,8 @@
 package com.kh.board.comment;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,15 +37,7 @@ public class BoardRecommController extends HttpServlet {
 		String userPw = request.getParameter("userpw");
 		String context = request.getParameter("context");
 		String commid = request.getParameter("commid");
-		
-		System.out.println("단계 : "+step);
-		System.out.println("게시글 번호 :"+boardId);
-		System.out.println("유저아이디 : "+userId);
-		System.out.println("유저 비밀번호 : "+userPw);
-		System.out.println("댓글 아이디 : "+commid);
-		System.out.println("내영 : "+context);
 
-		
 		CommentDTO dto = new CommentDTO();
 		dto.setRefId(Integer.parseInt(boardId));
 		dto.setUserId(userId);
@@ -55,6 +49,12 @@ public class BoardRecommController extends HttpServlet {
 		BoardCommentService bcs = new BoardCommentService();
 		
 		int result = bcs.insertComment(dto);
+		
+		
+		PrintWriter out = response.getWriter();
+		out.append(String.valueOf(result));
+		out.flush();
+		out.close();
 	}
 
 }
