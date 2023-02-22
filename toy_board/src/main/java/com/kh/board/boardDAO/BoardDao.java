@@ -14,10 +14,7 @@ import com.kh.board.boardDTO.CategoryDto;
 import com.kh.jdbc.JdbcConnect;
 
 public class BoardDao {
-	
-	public BoardDao() {
-		// TODO Auto-generated constructor stub
-	}
+
 	//전체 게시판 리스트 
 	public List<BoardDto> BorderList(Connection conn){
 		List<BoardDto> blist = new ArrayList<BoardDto>();
@@ -257,7 +254,6 @@ public class BoardDao {
 			
 			
 			result = pstmt.executeUpdate();
-			System.out.println("1 성공 , 나머지 실패 : " + result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
