@@ -62,15 +62,17 @@
 			<span class="commentUserId">아이디 : ${clist.userId}</span>
 			<div class="recommentbox ${clist.commentId}box">
 				<form class="commentForm" action="commentReg" method="post">
-					<input type="hidden" class="commReqId" name="commReqId" value="${clist.commentId}">
+					<input type="hidden" class="commId" name="commId" value="${clist.commentId}">
+					<input type="hidden" class="pNum" name="pNum" value="${param.p}">
 					<input type="hidden"  class="boardId" name="boardId" value="${param.id }">
 					<input type="hidden"  class="stepType" name="stepType" value="2">
 					<input type="text" class="commentListId" name="commentListId" value="${clist.userId}">
 					<input type="password"  class="commentListPw" name="commentListPw">
-					<textarea class="Listcomment" disabled="disabled" >${clist.context} </textarea>
+					<textarea class="Listcomment" disabled>${clist.context} </textarea>
 				</form>
 				<div class="buttonbox" >
-					<button type="button" id="commentModi" class="btn commentModi">수정</button>
+					<button type="button" id="commentModi" class="btn commentChange" style="display: inline-block">수정</button>
+					<button type="button" id="commentModi" class="btn commentModi" style="display: none">수정확인</button>
 					<button type="button" id="commentDel" class="btn commentDel">삭제</button>
 				</div>
 			</div>
@@ -83,6 +85,25 @@
 	<script type="text/javascript">
  
 	$("#regComment").on("click", cWrite);
+	$(".commentChange").on("click", cChange);
+	$(".commentModi").on("click", cModify);
+	$(".commentDel").on("click", cDelete);
+	
+	function cChange(){
+		
+		var formId = $(this).parent().prev(".commentForm");
+		
+		 if(formId.find(".commentListId").val() == null || formId.find(".commentListId").val() ==""){
+			alert("등록하실 댓글에 아이디를 입력해 주세요");
+		}else if(formId.find(".commentListPw").val() == null || formId.find(".commentListPw").val() ==""){
+			alert("등록하실 댓글에 비밀번호를 입력해 주세요");
+		}else{
+			checkUserid(formId.find(".commentListId").val(), formId.find(".commentListPw").val());
+
+		}
+
+	}
+	
 	 
 	function cWrite(){
 		
@@ -96,6 +117,34 @@
 				$("#step1").submit();
 			}
 		}
+	
+	function cModify(){
+		
+		var formId = $(this).parent().prev(".commentForm");
+		
+		 if(formId.find(".commentListId").val() == null || formId.find(".commentListId").val() ==""){
+			alert("수정하실 댓글에 아이디를 입력해 주세요");
+		}else if(formId.find(".commentListPw").val() == null || formId.find(".commentListPw").val() ==""){
+			alert("수정하실 댓글에 비밀번호를 입력해 주세요");
+		}else if(formId.find(".Listcomment").val() == null || formId.find(".Listcomment").val() ==""){
+			alert("내용을 입력해 주세요");
+		}else{
+			CommentModify();	
+			}
+		}
+	
+	function cDelete(){
+		
+		var formId = $(this).parent().prev(".commentForm");
+		
+		 if(formId.find(".commentListId").val() == null || formId.find(".commentListId").val() ==""){
+			alert("삭제하실 댓글에 아이디를 입력해 주세요");
+		}else if(formId.find(".commentListPw").val() == null || formId.find(".commentListPw").val() ==""){
+			alert("삭제하실 댓글에 비밀번호를 입력해 주세요");
+		}else{
+			CommentDelete();
+			}
+		}
 
 	$(".totop").click(function(){
 		  window.scrollTo({top : 0, behavior: 'auto'}); 
@@ -106,16 +155,89 @@
 			$(this).children(".buttonbox").css('display', 'block');
 			$(this).children(".commentForm").children(".commentListId").css('display', 'block');
 			$(this).children(".commentForm").children(".commentListPw").css('display', 'block');
+			$(this).addClass("selectbox");
 			$('.recommentbox').not($(this)).children(".buttonbox").css('display', 'none');
 			$('.recommentbox').not($(this)).children(".commentForm").children(".commentListId").css('display', 'none');
 			$('.recommentbox').not($(this)).children(".commentForm").children(".commentListPw").css('display', 'none');
+			$('.recommentbox').not($(this)).removeClass("selectbox");
 	})
+
 	
-	// ajaxfh 댓글 삭제 수정 만들기
+		function checkUserid(userid, userpw){
+		
+		var formId = $(".selectbox").find(".commentForm");
+		
+		$.ajax({
+			url : "<%=request.getContextPath() %>/commid.lo",
+			type : "post",
+			async : false,
+			data : {userid : userid, userpw : userpw, commid : formId.find(".commId").val()},
+			success : function(result){
+				if(result === "1"){
+					formId.next().find(".commentChange").css("display", "none");
+					formId.next().find(".commentModi").css("display", "inline-block");
+					formId.find(".Listcomment").attr("disabled", false);	
+				}else{
+					alert(result);
+				}
+			},
+			error : function(request, status, error){
+				alert(request.statis)
+				console.log(result + "error");
+			}
+		});
+	}
 	
+	function CommentModify(){
+		
+		var formId = $(".selectbox").find(".commentForm");
+		
+		$.ajax({
+			url : "<%=request.getContextPath() %>/commupdate.lo",
+			type : "post",
+			async : false,
+			data : {userid : formId.find(".commentListId").val(), userpw : formId.find(".commentListPw").val()
+					, commid : formId.find(".commId").val(), boardId : formId.find(".boardId").val()
+					, pNum : formId.find(".pNum").val(), context : formId.find(".Listcomment").val()},
+			success : function(result){
+				if(result === "1"){
+					location.reload();
+				}else{
+					alert(result);
+				}
+			},
+			error : function(request, status, error){
+				alert(request.statis)
+				console.log(result + "error");
+			}
+		});
+	}
 	
-	
-	
+	function CommentDelete(){
+		
+		var formId = $(".selectbox").find(".commentForm");
+		
+		$.ajax({
+			url : "<%=request.getContextPath() %>/commdelete.lo",
+			type : "post",
+			async : false,
+			data : {userid : formId.find(".commentListId").val(), userpw : formId.find(".commentListPw").val()
+					, commid : formId.find(".commId").val()},
+			success : function(result){
+				if(result === "1"){
+					location.reload();
+				}else{
+					alert(result);
+				}
+			},
+			error : function(request, status, error){
+				alert(request.statis)
+				console.log(result + "error");
+			}
+		});
+	}
+
+
  </script>
 	
 	

@@ -74,5 +74,78 @@ public class CommentDAO {
 		
 		return clist;
 	}
+	
+	public int searchId(Connection conn, CommentDTO dto) {
+		int result = -1;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "SELECT COUNT(*) AS CNT FROM BOARD_COMMENT WHERE COMMENT_ID = ? AND USER_ID = ? AND USER_PW = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, dto.getCommentId());
+			pstmt.setString(2, dto.getUserId());
+			pstmt.setString(3, dto.getUserPw());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JdbcConnect.close(rs);
+			JdbcConnect.close(pstmt);
+		}
+
+		return result;
+	}
+	
+	public int updateComment(Connection conn, CommentDTO dto) {
+		int result = -1;
+		PreparedStatement pstmt = null;
+		String query = " UPDATE BOARD_COMMENT SET CONTEXT = ? , REG_DATE = SYSTIMESTAMP"
+				+ "  WHERE COMMENT_ID = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, dto.getContext());
+			pstmt.setInt(2, dto.getCommentId());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JdbcConnect.close(pstmt);
+		}
+
+		return result;
+	}
+
+	public int deleteComment(Connection conn, CommentDTO dto) {
+		int result = -1;
+		PreparedStatement pstmt = null;
+		String query = "DELETE FROM BOARD_COMMENT "
+				+ "  WHERE COMMENT_ID = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1, dto.getCommentId());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JdbcConnect.close(pstmt);
+		}
+
+		return result;
+	}
 
 }

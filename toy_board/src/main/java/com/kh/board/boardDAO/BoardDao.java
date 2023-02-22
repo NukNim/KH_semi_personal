@@ -66,11 +66,13 @@ public class BoardDao {
 		List<BoardDto> bnlist = new ArrayList<BoardDto>();
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
-		String query = "SELECT ID, TITLE ,CONTENT, USER_ID, USER_PW ,CREATE_DATE ,MODI_DATE ,DEL_FLAG ,CATEGORY_NAME, VIEW_CNT "
-				+ "FROM TOY_BOARD b join CATEGORY c on b.CATEGORY =c.CATEGORY_ID"
-				+ " WHERE c.CATEGORY_ID = 50"
-				+ " AND del_flag ='N'"
-				+ " ORDER BY ID DESC";
+		String query = "SELECT ID, TITLE ,CONTENT, USER_ID, USER_PW ,CREATE_DATE ,MODI_DATE ,DEL_FLAG ,CATEGORY_NAME, VIEW_CNT \r\n"
+				+ " FROM (SELECT rownum as N,ID, TITLE ,CONTENT, USER_ID, USER_PW ,CREATE_DATE ,MODI_DATE ,DEL_FLAG ,CATEGORY_NAME, VIEW_CNT \r\n"
+				+ "    FROM TOY_BOARD b join CATEGORY c on b.CATEGORY =c.CATEGORY_ID\r\n"
+				+ "    WHERE c.CATEGORY_ID = 50\r\n"
+				+ "    AND del_flag ='N'\r\n"
+				+ "    ORDER BY ID DESC)\r\n"
+				+ " WHERE N BETWEEN 1 AND 3";
 		try {
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
@@ -108,7 +110,11 @@ public class BoardDao {
 		List<BoardDto> anlist = new ArrayList<BoardDto>();
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
-		String query = "SELECT ID, TITLE ,CONTENT, USER_ID, USER_PW ,CREATE_DATE ,MODI_DATE ,DEL_FLAG ,CATEGORY_NAME, VIEW_CNT FROM TOY_BOARD b join CATEGORY c on b.CATEGORY =c.CATEGORY_ID where c.CATEGORY_ID = 60 and del_flag ='N' ORDER BY ID DESC";
+		String query = "SELECT ID, TITLE ,CONTENT, USER_ID, USER_PW ,CREATE_DATE ,MODI_DATE ,DEL_FLAG ,CATEGORY_NAME, VIEW_CNT \r\n"
+				+ " FROM (SELECT ROWNUM AS N, ID, TITLE ,CONTENT, USER_ID, USER_PW ,CREATE_DATE ,MODI_DATE ,DEL_FLAG ,CATEGORY_NAME, VIEW_CNT \r\n"
+				+ "    FROM TOY_BOARD b join CATEGORY c on b.CATEGORY =c.CATEGORY_ID \r\n"
+				+ "    where c.CATEGORY_ID = 60 and del_flag ='N' ORDER BY ID DESC)\r\n"
+				+ " WHERE N = 1";
 		try {
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
@@ -399,7 +405,6 @@ public class BoardDao {
 			JdbcConnect.close(pstmt);	
 		}
 		
-		System.out.println("토탈 로우 : " + result);
 		return result;
 	}
 	

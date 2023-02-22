@@ -30,14 +30,10 @@ public class AdminCheckController extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		
-		System.out.println("관리자 체크");
-		
 		String userid = request.getParameter("userid");
 		String userpw = request.getParameter("userpw");
 		
 		PrintWriter out = response.getWriter();
-		System.out.println("비교 아이디 :    " + userid);
-		System.out.println("비교 비밀번호 :    " + userpw);
 		if(userid.equals("admin") && userpw.equals("admin")) {
 			out.append("1");			
 		}else {
