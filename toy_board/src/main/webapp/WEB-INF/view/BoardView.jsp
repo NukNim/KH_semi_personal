@@ -251,7 +251,7 @@
 			data : {userid : formId.find(".commentListId").val(), userpw : formId.find(".commentListPw").val()
 					, commid : formId.find(".commId").val()},
 			success : function(result){
-				if(result === "1"){
+				if(result >= "1"){
 					location.reload();
 				}else{
 					alert(result);
